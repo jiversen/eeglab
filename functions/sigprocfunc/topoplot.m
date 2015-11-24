@@ -87,6 +87,7 @@
 %                       but you can provide a 1byX vector for size and Xby3 vector for color to change.
 %                       {default : 'off'}  
 %   'hcolor'          - color of the cartoon head. Use 'hcolor','none' to plot no head. {default: 'k' = black}
+%   'hlinewidth;      - line width for cartoon head {default: 2}
 %   'shading'         - 'flat','interp'  {default: 'flat'}
 %   'numcontour'      - number of contour lines {default: 6}. You may also enter a vector to set contours 
 %                       at specified values.
@@ -213,6 +214,7 @@
 % 03-15-02 added readlocs and the use of eloc input structure -ad 
 % 03-25-02 added 'labelpoint' options and allow Values=[] -ad &sm
 % 03-25-02 added details to "Unknown parameter" warning -sm & ad
+% 2011 add control for head line width, MNI coordinates, multiple-dipole structure arrays -jri
 
 function [handle,Zi,grid,Xi,Yi] = topoplot(Values,loc_file,varargin)
 
@@ -297,6 +299,9 @@ CHANINFO  = [];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% JRI personal hack to improve plotting speed
+set(gcf,'renderer','painters')
+
 %
 %%%%%%%%%%%%%%%%%%%%%%% Handle arguments %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -305,6 +310,8 @@ if nargin< 1
    return
 end
 
+%(*** JRI *** FYI: this is obsolete--fieldtrip no longer has a function called topoplot)
+%   however, if older version is installed this still might be of  use
 % calling topoplot from Fieldtrip
 % -------------------------------
 fieldtrip = 0;
@@ -564,6 +571,8 @@ if nargs > 2
                 end
             case {'headcolor','hcolor'}
                 HEADCOLOR = Value;
+            case {'headlinewidth', 'hlinewidth'} % *** JRI ***
+                HLINEWIDTH = Value;
             case {'contourcolor','ccolor'}
                 CCOLOR = Value;
             case {'electcolor','ecolor'}
@@ -1643,6 +1652,9 @@ catch, end
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%% Plot dipole(s) on the scalp map  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
+
+% *** JRI *** TODO: project dipoles in same way electrodes are
+
 if ~isempty(DIPOLE)  
     hold on;
     tmp = DIPOLE;
@@ -1650,12 +1662,38 @@ if ~isempty(DIPOLE)
         if ~isfield(tmp,'posxyz')
            error('dipole structure is not an EEG.dipfit.model')
         end
-        DIPOLE = [];  % Note: invert x and y from dipplot usage
-        DIPOLE(:,1) = -tmp.posxyz(:,2)/DIPSPHERE; % -y -> x
-        DIPOLE(:,2) =  tmp.posxyz(:,1)/DIPSPHERE; %  x -> y
-        DIPOLE(:,3) = -tmp.momxyz(:,2);
-        DIPOLE(:,4) =  tmp.momxyz(:,1);
-        DIPOLE(:,5) =  tmp.momxyz(:,3);
+        
+        % *** JRI *** handle multiple dipoles stored as struct array
+        if length(DIPOLE) > 1,
+          tmp = DIPOLE(1);
+          tmp.rv = 0;
+          for i = 1:length(DIPOLE),
+            tmp.posxyz(i,:) = DIPOLE(i).posxyz;
+            tmp.momxyz(i,:) = DIPOLE(i).momxyz;
+            tmp.rv = tmp.rv + DIPOLE(i).rv/length(DIPOLE);
+          end
+        end
+        % *** JRI *** handle multiple dipoles stored as struct array
+        
+        DIPOLE = [];
+        
+        % *** JRI *** add support for MNI coordinate format
+        if (~isfield(tmp,'coordformat') || strcmp(tmp.coordformat,'spherical') || strcmp(tmp.coordformat,'CTF')),
+            % Note: invert x and y from dipplot usage
+            DIPOLE(:,1) = -tmp.posxyz(:,2)/DIPSPHERE; % -y -> x
+            DIPOLE(:,2) =  tmp.posxyz(:,1)/DIPSPHERE; %  x -> y
+            DIPOLE(:,3) = -tmp.momxyz(:,2);
+            DIPOLE(:,4) =  tmp.momxyz(:,1);
+        elseif strcmp(tmp.coordformat,'MNI'),
+            DIPOLE(:,1) =  tmp.posxyz(:,1)/DIPSPHERE;
+            DIPOLE(:,2) =  tmp.posxyz(:,2)/DIPSPHERE;
+            DIPOLE(:,3) =  tmp.momxyz(:,1);
+            DIPOLE(:,4) =  tmp.momxyz(:,2);
+        else
+            error('unknown dipole coordinate format')
+        end
+        % *** JRI *** add support for MNI coordinate format
+        
     else
         DIPOLE(:,1) = -tmp(:,2);                    % same for vector input
         DIPOLE(:,2) =  tmp(:,1);
