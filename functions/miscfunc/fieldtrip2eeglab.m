@@ -1,5 +1,7 @@
 % fieldtrip2eeglab - convert Fieldtrip structures to EEGLAB dataset
 %
+% EEG = fieldtrip2eeglab(header, data, evt);
+%
 % EEG = fieldtrip2eeglab(header, rawdata, evt);
 % EEG = fieldtrip2eeglab(data);
 %
