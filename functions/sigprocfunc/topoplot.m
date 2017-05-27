@@ -294,7 +294,7 @@ CHANINFO  = [];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % JRI personal hack to improve plotting speed
-set(gcf,'renderer','painters')
+%set(gcf,'renderer','painters')
 
 %
 %%%%%%%%%%%%%%%%%%%%%%% Handle arguments %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1183,6 +1183,7 @@ if ~strcmpi(STYLE,'blank') % if draw interpolated scalp map
         handle = tmph;
     end
     
+    if 0, % JRI 1/15/17 temporary, to get old matlab working on sierra, contour crashes it
     warning off;
     if ~PMASKFLAG
         [cls chs] = contour(Xi,Yi,ZiC,CONTOURNUM,'k'); 
@@ -1198,6 +1199,7 @@ if ~strcmpi(STYLE,'blank') % if draw interpolated scalp map
     handle = tmph;                                   % surface handle
     try, for h=chs, set(h,'color',CCOLOR); end, catch, end % the try clause is for Octave
     warning on;
+    end
   %
   %%%%%%%%%%%%%%%%%%%%%%%% Else plot map only %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   %
