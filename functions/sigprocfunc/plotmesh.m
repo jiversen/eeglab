@@ -72,7 +72,8 @@ function p1 = plotmesh(faces, vertex, normal, newfig)
                    'facecolor', [1,.75,.65], 'vertexnormals', normal);
     end
         %           'FaceVertexCdata',W(:), 'FaceColor','interp', 'vertexnormals', normal);
-    set(p1,'EdgeColor','none')
+    set(p1,'EdgeColor',[0 0 0])
+    set(p1,'facecolor','none')
     
     % Lights
     %Lights = [-125  125  80; ...
