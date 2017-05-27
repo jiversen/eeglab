@@ -200,9 +200,10 @@ else
 	else
 		error('You must run ICA first');
 	end;	
-end;	 
-tmpsig1 = reshape( tmpsig1, 1, size(tmpsig1,2)*size(tmpsig1,3));
-tmpsig2 = reshape( tmpsig2, 1, size(tmpsig2,2)*size(tmpsig2,3));
+end;	
+% JRI 1/15/17 -- must comment these out for newcrossf to work
+%tmpsig1 = reshape( tmpsig1, 1, size(tmpsig1,2)*size(tmpsig1,3));
+%tmpsig2 = reshape( tmpsig2, 1, size(tmpsig2,2)*size(tmpsig2,3));
 
 % outputs
 % -------
