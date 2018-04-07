@@ -1453,7 +1453,9 @@ end
 mbase = mbase';
 
 if ~isempty(g.caption)
-    h = textsc(g.caption, 'title');
+    %h = textsc(g.caption, 'title'); %this is no good if we're doing
+    %multiple subplots, as it puts a 'supertitle' on top of the page
+    h = title(g.caption)
     set(h, 'FontWeight', 'bold');
 end
 
