@@ -162,6 +162,7 @@ opt = finputcheck( options, ...
                                'datatype'    'string'  {}              'erp';
                                'mode'  'string'  []  '';
                                'comps'  { 'string', 'integer' }  []  [];
+                               'colors'      'cell'    []              {}; %for std_plotcurves (FIXME: JRI 2025 kept in. Needed?)
                                'statmode'    'string'  { 'subjects','common','trials' } 'subjects';
                                'avgmode'     'string'  { 'mean','rms','median' } 'mean';
                                'plotmode'    'string'  { 'normal','condensed' }  'normal';
@@ -241,6 +242,11 @@ plotcurveopt = { plotcurveopt{:} ...
    'plotgroups',     params.plotgroups, ...
    'effect',         stats.effect, ...
    'plotconditions', params.plotconditions };
+ 
+ if ~isempty(opt.colors)
+   plotcurveopt = { plotcurveopt{:} ...
+     'colors', opt.colors };
+ end
 
 % channel plotting
 % ----------------
