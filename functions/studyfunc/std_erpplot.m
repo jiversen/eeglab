@@ -162,6 +162,7 @@ opt = finputcheck( options, ...
                                'datatype'    'string'  {}              'erp';
                                'mode'        'string'  []              ''; % for backward compatibility (now used for statistics)
                                'comps'       { 'string','integer' } [] []; % for backward compatibility
+                               'colors'      'cell'    []              {}; %for std_plotcurves
                                'statmode'    'string'  { 'subjects','common','trials' } 'subjects'; % ignored
                                'plotmode'    'string'  { 'normal','condensed' }  'normal';
                                'unitx'       'string'  { 'ms','Hz' }    'ms';
@@ -236,6 +237,11 @@ plotcurveopt = { plotcurveopt{:} ...
    'plotgroups',     params.plotgroups, ...
    'effect',         stats.effect, ...
    'plotconditions', params.plotconditions };
+ 
+ if ~isempty(opt.colors)
+   plotcurveopt = { plotcurveopt{:} ...
+     'colors', opt.colors };
+ end
 
 % channel plotting
 % ----------------
