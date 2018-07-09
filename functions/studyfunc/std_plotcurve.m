@@ -344,7 +344,8 @@ colcount = 1; % only when plotting all conditions on the same figure
 tmpcol = col;
 for c = 1:ncplot
     for g = 1:ngplot
-        if strcmpi(opt.figure, 'off'), tmpcol(1) = []; end % knock off colors ----- rows col ind
+        %if strcmpi(opt.figure, 'off'), tmpcol(1) = []; end % knock off colors ----- rows col ind
+        %what is purpose of line above? It breaks use of colors in std_erpplot
         if strcmpi(opt.plotgroups, 'together'),         hdl(c,g)=mysubplot(ncplot+addr, ngplot+addc, c, 1, opt.subplot); ci = g;
         elseif strcmpi(opt.plotconditions, 'together'), hdl(c,g)=mysubplot(ncplot+addr, ngplot+addc, 1, g, opt.subplot); ci = c;
         else                                            hdl(c,g)=mysubplot(ncplot+addr, ngplot+addc, c, g, opt.subplot); ci = 1;
