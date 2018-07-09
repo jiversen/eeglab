@@ -401,7 +401,9 @@ end
 
 % Read system (or directory) constants and preferences:
 % ------------------------------------------------------
-icadefs % read local EEGLAB constants: HZDIR, YDIR, DEFAULT_SRATE, DEFAULT_TIMLIM
+if nargin < 2 %The only case in which the defaults are really used, skip otherwise
+  icadefs % read local EEGLAB constants: HZDIR, YDIR, DEFAULT_SRATE, DEFAULT_TIMLIM
+end
 
 if ~exist('HZDIR'), HZDIR = 'up'; end; % ascending freqs
 if ~exist('YDIR'), YDIR = 'up'; end;   % positive up
