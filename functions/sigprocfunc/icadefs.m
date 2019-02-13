@@ -107,7 +107,7 @@ elseif VERS >= 8.04
         
         % AXES FONTSIZE
         if retinaDisplay
-          AXES_FONTSIZE   = 12;                 % Axis labels and legend font size
+          AXES_FONTSIZE   = 16;                 % Axis labels and legend font size
         else
           AXES_FONTSIZE   = 9;                 % Axis labels and legend font size
         end
@@ -116,7 +116,7 @@ elseif VERS >= 8.04
         
         % GUI FONTSIZE
         if retinaDisplay
-          GUI_FONTSIZE    = 14;                % graphic interface font size
+          GUI_FONTSIZE    = 18;                % graphic interface font size
         else
           GUI_FONTSIZE    = 12;                % graphic interface font size
         end
@@ -125,7 +125,7 @@ elseif VERS >= 8.04
         
         % TEXT FONTSIZE
         if retinaDisplay
-          TEXT_FONTSIZE   = 14;                 % Miscellaneous font sizes
+          TEXT_FONTSIZE   = 18;                 % Miscellaneous font sizes
         else
           TEXT_FONTSIZE   = 12;                 % Miscellaneous font sizes
         end
