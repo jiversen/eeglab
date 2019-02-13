@@ -135,7 +135,7 @@ if fid>0
 
 % determine what 'square' means
 % -----------------------------
- if ischar('Asize')
+ if ischar(Asize)
    if iscell(offset)
          if length(datasize) ~= 2 || datasize(1) ~= datasize(2)
               error('size ''square'' must refer to a square 2-D matrix');
