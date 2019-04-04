@@ -414,11 +414,17 @@ for index = 1:length(chan)
             tmpFieldData = fileData.(fieldToRead);
             if isempty(trials), tmpFieldData = []; end
         elseif ndims(fileData.(fieldToRead)) == 2
-            tmpFieldData = fileData.(fieldToRead)(indBegin1:indEnd1,trials);
-            if ~isempty(subTrials), tmpFieldData = tmpFieldData(:, subTrials); end
+            if isempty(subTrials)
+                tmpFieldData = fileData.(fieldToRead)(indBegin1:indEnd1,trials);
+            else
+                tmpFieldData = fileData.(fieldToRead)(indBegin1:indEnd1,trials(subTrials));
+            end
         else
-            tmpFieldData = fileData.(fieldToRead)(indBegin2:indEnd2,indBegin1:indEnd1,trials); % frequencies first here
-            if ~isempty(subTrials), tmpFieldData = tmpFieldData(:, :, subTrials); end
+            if isempty(subTrials)
+                tmpFieldData = fileData.(fieldToRead)(indBegin2:indEnd2,indBegin1:indEnd1,trials); % frequencies first here
+            else
+                tmpFieldData = fileData.(fieldToRead)(indBegin2:indEnd2,indBegin1:indEnd1,trials(subTrials)); % frequencies first here
+            end
         end
     end
     if isfield(fileData, 'events') && ~isempty(fileData.events)
