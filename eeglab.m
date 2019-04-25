@@ -606,12 +606,12 @@ cb_savestudy2  = [ check   '[STUDYTMP ALLEEGTMP LASTCOM] = pop_savestudy(STUDY, 
 cb_clearstudy  =           'LASTCOM = ''STUDY = []; CURRENTSTUDY = 0; ALLEEG = []; EEG=[]; CURRENTSET=[];''; eval(LASTCOM); eegh( LASTCOM ); eeglab redraw;';
 cb_editoptions = [ nocheck 'if isfield(ALLEEG, ''nbchan''), LASTCOM = pop_editoptions(length([ ALLEEG.nbchan ]) >1);' ...
                            'else                            LASTCOM = pop_editoptions(0); end;'                    e_hist_noeegh ];
-cb_plugin      = [ nocheck 'if plugin_menu(PLUGINLIST) , close(findobj(''tag'', ''EEGLAB'')); eeglab redraw; end;' e_hist_noeegh ];
+cb_plugin      = [ nocheck 'if plugin_menu(PLUGINLIST) , delete(findobj(''tag'', ''EEGLAB'')); eeglab redraw; end;' e_hist_noeegh ]; %JRI close-->delete
 
 cb_saveh1      = [ nocheck 'LASTCOM = pop_saveh(EEG.history);' e_hist_noeegh];
 cb_saveh2      = [ nocheck 'LASTCOM = pop_saveh(ALLCOM);'      e_hist_noeegh];
 cb_runsc       = [ nocheck 'LASTCOM = pop_runscript;'          e_hist   ];
-cb_quit        = [ 'close(gcf); disp(''To save the EEGLAB command history  >> pop_saveh(ALLCOM);'');' ...
+cb_quit        = [ 'delete(gcf); disp(''To save the EEGLAB command history  >> pop_saveh(ALLCOM);'');' ... %JRI close-->delete
                    'clear global EEG ALLEEG LASTCOM CURRENTSET;'];
 
 cb_editset     = [ check      '[EEG LASTCOM] = pop_editset(EEG);'        e_store];
