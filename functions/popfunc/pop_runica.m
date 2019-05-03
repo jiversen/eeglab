@@ -97,6 +97,7 @@
 % 03-07-02 add the eeglab options -ad
 % 03-18-02 add other decomposition options -ad
 % 03-19-02 text edition -sm
+% 12-21-18 add cudaica -jri
 
 function [ALLEEG, com] = pop_runica( ALLEEG, varargin )
 
@@ -108,7 +109,7 @@ end
 
 % find available algorithms
 % -------------------------
-allalgs   = { 'runica' 'binica' 'jader' 'jadeop' 'jade_td_p' 'MatlabshibbsR' 'fastica' ...
+allalgs   = { 'runica' 'binica' 'cudaica' 'jader' 'jadeop' 'jade_td_p' 'MatlabshibbsR' 'fastica' ...
               'tica' 'erica' 'simbec' 'unica' 'amuse' 'fobi' 'evd' 'evd24' 'sons' 'sobi' 'ng_ol' ...
               'acsobiro' 'acrsobibpf' 'pearson_ica' 'egld_ica' 'eeA' 'tfbss' 'icaML' 'icaMS' 'picard' }; % do not use egld_ica => too slow
 selectalg = {};
@@ -158,7 +159,7 @@ if nargin < 2 || selectamica
                    '    warndlg2(''No channel type'', ''No channel type'');' ...
                    'end;' ...
 				   'clear tmps tmpv tmpstr tmptype tmpchans;' ];
-    cb_ica = [ 'if get(gcbo, ''value'') < 3, ' ...
+    cb_ica = [ 'if get(gcbo, ''value'') < 4, ' ...
                '     set(findobj(gcbf, ''tag'', ''params''), ''string'', ''''''extended'''', 1'');' ...
                'else,' ...
                '    tmpStr =  get(gcbo, ''string'');' ....
@@ -418,7 +419,7 @@ end
 tmpdata = reshape( EEG.data(g.chanind,:,:), length(g.chanind), EEG.pnts*EEG.trials);
 tmprank = getrank(double(tmpdata(:,1:min(3000, size(tmpdata,2)))), pca_opt);
 tmpdata = tmpdata - repmat(mean(tmpdata,2), [1 size(tmpdata,2)]); % zero mean 
-if ~strcmpi(g.icatype, 'binica')
+if ~strcmpi(lower(g.icatype), 'binica') && ~strcmpi(lower(g.icatype), 'cudaica')
     try
         disp('Attempting to convert data matrix to double precision for more accurate ICA results.')
         tmpdata = double(tmpdata);
@@ -472,6 +473,15 @@ switch lower(g.icatype)
             disp(['Data rank (' int2str(tmprank) ') is smaller than the number of channels (' int2str(size(tmpdata,1)) ').']);
             [EEG.icaweights,EEG.icasphere] = binica( tmpdata, 'lrate', 0.001, 'pca', tmprank, g.options{:} );
         end
+    case 'cudaica'
+      tmprank = getrank(tmpdata(:,1:min(3000, size(tmpdata,2))));
+      if tmprank == size(tmpdata,1) || pca_opt
+        [EEG.icaweights,EEG.icasphere] = cudaica( tmpdata, 'lrate', 0.0005, g.options{:} );
+      else
+        disp(['Data rank (' int2str(tmprank) ') is smaller than the number of channels (' int2str(size(tmpdata,1)) ').']);
+        [EEG.icaweights,EEG.icasphere] = cudaica( tmpdata, 'lrate', 0.0005, 'pca', tmprank, g.options{:} );
+      end
+    
     case 'amica' 
         tmprank = getrank(tmpdata(:,1:min(3000, size(tmpdata,2))));
         fprintf('Now Running AMICA\n');
