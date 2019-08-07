@@ -47,18 +47,26 @@ end;
 if nargin < 2
     delims = [' ' ',' 9 '"' '''' ];
 end
+
+%JRI if any non-space delimiters are present in txt, then we do not also
+%want to use spaces as a delimiter. Splitting on spaces fails for event labels such as
+%'Picture: A'. This also requires to use deblank reject events consisting only of
+%spaces.
+if ~isempty(intersect(txt, delims(delims~=' ')))
+    delims = delims(delims~=' ');
+end
     
 cellarray = {};
 tmptxt = '';
 for index =1:length(txt)
     if ~isempty(findstr(txt(index), delims))
-        if ~isempty(tmptxt), cellarray = { cellarray{:}, tmptxt }; end
+        if ~isempty(deblank(tmptxt)), cellarray = { cellarray{:}, tmptxt }; end
         tmptxt = '';
     else
         tmptxt = [ tmptxt txt(index) ];
     end
 end;        
-if ~isempty(tmptxt)
+if ~isempty(deblank(tmptxt))
     cellarray = { cellarray{:}, tmptxt };
 end
 return;
