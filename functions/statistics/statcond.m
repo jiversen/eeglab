@@ -511,7 +511,7 @@ function [ ori_vals, df, pvals, surrogval ] = statcond( data, varargin );
     % confidence intervals
     % --------------------
     if ~isnan(g.alpha)
-        outputstruct.ci = stat_surrogate_ci(surrogval, g.alpha, tail);
+        outputstruct.ci = stat_surrogate_ci(surrogval, g.alpha, tail); % BUG: this is called when surrogval = [], fixed func to return [] if so
         if strcmpi(g.structoutput, 'off')
             disp('Warning: returning confidence interval requires an output structure');
         end

@@ -55,6 +55,12 @@ if nargin<2
     alpha = 0.05;
 end
 
+% FIXME: JRI to work around bug in statcond
+if isempty(distribution)
+    ci = [];
+    return
+end
+
 % reshape matrix
 % --------------
 nd = size(distribution);
