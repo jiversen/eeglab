@@ -5,9 +5,11 @@
 % Inputs:
 %   data     - write matrix data to specified file as four-byte floating point numbers.
 %   filename - name of the file
-%   'format' - The option FORMAT argument specifies the storage format as
+%   format   - The option FORMAT argument specifies the storage format as
 %              defined by fopen. Default format is 'native'.
 %   'transp|normal' - save the data transposed (.dat files) or not.
+%   precision - 'float' by default, but if pass 'double', writes doubles. A
+%               hack to let it work with cudaica_win.
 %
 % Author: Sigurd Enghoff, CNL / Salk Institute, La Jolla, 7/1998 
 %
@@ -43,14 +45,19 @@
 % 07-08-99  FORMAT argument added -se
 % 02-08-00  new version included in toolbox -sm
 % 01-25-02 reformated help & license, added links -ad 
+% 03-16-20  add precision argument (float default, but may specify 'double'
 
-function A = floatwrite(A, fname, fform, transp)
+function A = floatwrite(A, fname, fform, transp, precision)
 
-if ~exist('fform')
+if ~exist('fform','var') || isempty(fform)
 	fform = 'native';
 end
-if nargin < 4
+if nargin < 4 || isempty(transp)
     transp = 'normal';
+end
+
+if nargin < 5
+    precision = 'float';
 end
 
 if strcmpi(transp,'normal')
@@ -76,25 +83,25 @@ if strcmpi(transp,'normal')
         if size(A,3) > 1
             for ind = 1:size(A,3)
                 tmpdata = A(:,:,ind);
-                fwrite(fid,tmpdata,'float');
+                fwrite(fid,tmpdata,precision);
             end
         else
             blocks = [ 1:round(size(A,2)/10):size(A,2)];
             if blocks(end) ~= size(A,2), blocks = [blocks size(A,2)]; end
             for ind = 1:length(blocks)-1
                 tmpdata = A(:, blocks(ind):blocks(ind+1));
-                fwrite(fid,tmpdata,'float');
+                fwrite(fid,tmpdata,precision);
             end
         end
     else
         fid = fopen(fname,'wb',fform);
         if fid == -1, error('Cannot write output file, check permission and space'); end
-        fwrite(fid,A,'float');
+        fwrite(fid,A,precision);
     end
 else
     % save transposed
     for ind = 1:size(A,1)
-        fwrite(fid,A(ind,:),'float');
+        fwrite(fid,A(ind,:),precision);
     end
-end;    
+end  
 fclose(fid);
