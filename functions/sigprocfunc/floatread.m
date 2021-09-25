@@ -17,6 +17,8 @@
 %  offset    - either the number of first floats to skip from the beginning of the
 %              float file, OR a cell array containing the dimensions of the original 
 %              data matrix and a starting position vector in that data matrix. 
+%  precision - 'float' by default, but if pass 'double', writes doubles. A
+%               hack to let it work with cudaica_win.
 %
 %              Example: % Read a [3 10] submatrix of a four-dimensional float matrix 
 %                >> a = floatread('mydata.fdt',[3 10],'native',{[[3 10 4 5],[1,1,3,4]});
@@ -62,7 +64,7 @@
 % 08-14-00  added size 'square' option -sm
 % 01-25-02  reformated help & license, added links -ad 
 
-function A = floatread(fname,Asize,fform,offset)
+function A = floatread(fname,Asize,fform,offset,precision)
 
 if nargin<2
   help floatread
@@ -76,6 +78,16 @@ end
 if ~exist('offset') 
 	offset = 0;
 end
+
+if nargin < 5
+    precision = 'float';
+    sizeof = 4;
+elseif strcmp(precision,'double')
+    sizeof = 8;
+else
+    error('unrecognized value for precision.')
+end
+
 
 fid = fopen(fname,'rb',fform);
 if fid>0 
@@ -125,7 +137,7 @@ if fid>0
    
    % perform the fseek() operation
    % -----------------------------
-   stts = fseek(fid,4*offset,'bof');
+   stts = fseek(fid,sizeof*offset,'bof');
 
    if stts ~= 0
      error('floatread(): fseek() error.');
@@ -145,7 +157,7 @@ if fid>0
          fseek(fid,0,'eof'); % go to end of file
          bytes = ftell(fid); % get byte position
          fseek(fid,0,'bof'); % rewind
-         bytes = bytes/4; % nfloats
+         bytes = bytes/sizeof; % nfloats
          froot = sqrt(bytes);
          if round(froot)*round(froot) ~= bytes
               error('floatread(): filelength is not square.')
@@ -154,7 +166,7 @@ if fid>0
          end
    end
  end
- A = fread(fid,prod(Asize),'float');
+ A = fread(fid,prod(Asize),precision);
 else
  error('floatread() fopen() error.');
  return
