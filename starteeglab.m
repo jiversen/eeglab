@@ -32,11 +32,15 @@ nScreen = size(monpos,1);
 
 %move eeglab main window to second screen
 if nScreen > 1
-   set(eegwin,'position', [2062 804 382 298]) %adjust for your setup
+    if ~ispc
+        set(eegwin,'position', [2062 804 382 298]) %adjust for your setup
+    else
+        set(eegwin,'position', [66 730 382 298])
+    end
 end
 %sometimes two screens present as a single very wide screens
 ss = get(0,'ScreenSize');
-if ss(3) > 2000
+if ss(3) > 2000 && nScreen == 1
   set(eegwin,'position', [ 2066        860        400          236]) %adjust for your setup
 end
 drawnow
