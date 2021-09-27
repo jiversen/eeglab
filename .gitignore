@@ -7,3 +7,5 @@
 !/plugins/ICLabel
 .DS_Store
 disabledplugins
+deactivatedplugins
+*.zip
