@@ -6,3 +6,8 @@
 !/plugins/ICLabel
 .DS_Store
 disabledplugins
+<<<<<<< HEAD
+=======
+deactivatedplugins
+*.zip
+>>>>>>> jiver
