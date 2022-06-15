@@ -6,10 +6,10 @@
 	url = https://github.com/sccn/clean_rawdata.git
 [submodule "plugins/firfilt"]
 	path = plugins/firfilt
-	url = https://arnodelorme@github.com/widmann/firfilt.git
+	url = https://github.com/sccn/firfilt.git
 [submodule "plugins/ICLabel"]
 	path = plugins/ICLabel
 	url = https://github.com/sccn/ICLabel
-[submodule "eeglab_tutorial_scripts"]
-	path = eeglab_tutorial_scripts
+[submodule "tutorial_scripts"]
+	path = tutorial_scripts
 	url = https://github.com/sccn/eeglab_tutorial_scripts.git
