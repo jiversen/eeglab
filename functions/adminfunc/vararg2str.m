@@ -171,8 +171,6 @@ function str = struct2str( structure )
             else
     		    str = [ str, '''' allfields{index} ''',' vararg2str( allcontent{1} ) ',' ];
             end
-        elseif length(allcontent) == 1 && ischar(allcontent{1}) 
-  		    str = [ str, '''' allfields{index} ''',''' allcontent{1} ''',' ];
         else
     		str = [ str, '''' allfields{index} ''',{' vararg2str( allcontent ) '},' ];
         end

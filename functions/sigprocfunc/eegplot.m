@@ -102,6 +102,8 @@
 %                   limits to display spectrum. (Data should contain spectral values).
 %                   *** This option must be used ALWAYS with 'freqs' ***  
 %    'winlength'  - [value] Seconds (or epochs) of data to display in window {default: 5}
+%    'time'         [value in second] Time to plot. Default is the
+%                   beginning of the data. 
 %    'dispchans'  - [integer] Number of channels to display in the activity window 
 %                   {default: from data}.  If < total number of channels, a vertical  
 %                   slider on the left side of the figure allows vertical data scrolling. 
