@@ -168,6 +168,8 @@ function str = struct2str( structure )
         if length(allcontent) == 1 && isnumeric(allcontent{1}) 
             if length(allcontent{1}) == 1
     		    str = [ str, '''' allfields{index} ''',' vararg2str( allcontent{1} ) ',' ];
+            elseif isempty(allcontent{1})
+    		    str = [ str, '''' allfields{index} ''',[],' ];
             else
     		    str = [ str, '''' allfields{index} ''',' vararg2str( allcontent{1} ) ',' ];
             end
