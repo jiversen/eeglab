@@ -90,7 +90,7 @@ com = '';
 if nargin < 1
    help pop_reref;
    return;
-end;   
+end
 if isempty(EEG(1).data)
     error('Pop_reref: cannot process empty data');
 end
@@ -323,10 +323,10 @@ end
 % -----------------------------
 if ~isempty(EEG.chanlocs)
     optionscall = { optionscall{:} 'elocs' EEG.chanlocs }; 
-end;    
+end
 
 fprintf('Re-referencing data\n');
-[EEG.data EEG.chanlocs refchan ] = reref(EEG.data, ref, optionscall{:});
+[EEG.data, EEG.chanlocs, refchan ] = reref(EEG.data, ref, optionscall{:});
 
 % If interpolation was done... then remove channels
 if interpflag
@@ -436,7 +436,7 @@ if ~isempty(EEG.icaweights)
         else
             EEG.icaweights = pinv(EEG.icawinv);
             EEG.icasphere  = eye(length(icachansind));
-        end;    
+        end  
     end
     EEG = eeg_checkset(EEG);
 end
@@ -444,3 +444,4 @@ end
 % generate the output command
 % ---------------------------
 com = sprintf('EEG = pop_reref( EEG, %s);', vararg2str({ref, options{:}}));
+
