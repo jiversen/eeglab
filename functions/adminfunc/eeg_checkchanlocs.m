@@ -168,7 +168,14 @@ if ~isempty(chanedit)
             end
             if strcmpi(fieldtype{index}, 'num')
                 if ~all(cellfun('isclass',allvals,'double'))
-                    numok = cellfun(@isnumeric, allvals);
+                    nomconvert = cellfun(@isinteger, allvals);
+                    if any(nomconvert)
+                        for indConvert = find(nomconvert)
+                            chanedit = setfield(chanedit, {indConvert}, fields{index}, double(allvals{indConvert}));
+                        end
+                    end
+                    allvals = {chanedit.(fields{index})};
+                    numok = cellfun(@isfloat, allvals);
                     if any(numok == 0)
                         for indConvert = find(numok == 0)
                             chanedit = setfield(chanedit, {indConvert}, fields{index}, []);
