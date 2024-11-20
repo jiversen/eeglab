@@ -790,7 +790,7 @@ for inddataset = 1:length(ALLEEG)
     % data dimensions -------------------------
     if isnumeric(EEG.data) && ~isempty(EEG.data)
         if ~isequal(size(EEG.data,1), EEG.nbchan)
-            disp( [ 'eeg_checkset warning: number of columns in data (' int2str(size(EEG.data,1)) ...
+            disp( [ 'eeg_checkset warning: number of rows in data (' int2str(size(EEG.data,1)) ...
                 ') does not match the number of channels (' int2str(EEG.nbchan) '): corrected' ]);
             res = com;
             EEG.nbchan = size(EEG.data,1);
@@ -1027,6 +1027,15 @@ for inddataset = 1:length(ALLEEG)
                             EEG.icaact = (EEG.icaweights*EEG.icasphere)*EEG.data(EEG.icachansind,:); % automatically does single or double
                         end
                         EEG.icaact    = reshape( EEG.icaact, size(EEG.icaact,1), EEG.pnts, EEG.trials);
+                    end
+                elseif ~isempty(EEG.icaact)
+                    tmpact = EEG.icaweights * EEG.icasphere * EEG.data(EEG.icachansind,1);
+                    if mean(abs(tmpact - EEG.icaact(:,1))) > 0.000001
+                        backtraceState = warning('backtrace');
+                        warning('backtrace', 'off')
+                        warning('ICA activities and weights mismatch, click on the link below for more information', 'verbose')
+                        fprintf('<a href="https://eeglab.org/others/TIPS_and_FAQ.html#ica-activity-warning">https://eeglab.org/others/TIPS_and_FAQ.html#ica-activity-warning</a>\n')
+                        warning('backtrace', backtraceState.state);
                     end
                 end
             end
