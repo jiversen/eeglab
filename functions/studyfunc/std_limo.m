@@ -248,6 +248,10 @@ if chanloc_created
     else
         limoChanlocsFile = fullfile(STUDY.filepath, chanlocname);
     end
+    % this sometimes happen to be nested in expected_chanlocs, fixing it here
+    if all(arrayfun(@(x) any(strcmp(x,{'expected_chanlocs','channeighbstructmat'})), fieldnames(limoChanlocsFile.expected_chanlocs)))
+        limoChanlocsFile = limoChanlocsFile.expected_chanlocs;
+    end
     save('-mat', limoChanlocsFile, '-struct', 'limoChanlocs');
     fprintf('Saving channel neighbors for correction for multiple comparisons in \n%s\n', limoChanlocsFile);
 end
