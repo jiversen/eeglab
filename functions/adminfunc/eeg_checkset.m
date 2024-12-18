@@ -1042,7 +1042,9 @@ for inddataset = 1:length(ALLEEG)
                         warning('backtrace', 'off')
                         warning('ICA activities and weights mismatch, click on the link below for more information', 'verbose')
                         fprintf('<a href="https://eeglab.org/others/TIPS_and_FAQ.html#ica-activity-warning">https://eeglab.org/others/TIPS_and_FAQ.html#ica-activity-warning</a>\n')
-                        warning('backtrace', backtraceState.state);
+                        if isstruct(backtraceState)
+                            warning('backtrace', backtraceState.state);
+                        end
                     end
                 end
             end
