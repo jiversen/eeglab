@@ -1028,9 +1028,16 @@ for inddataset = 1:length(ALLEEG)
                         end
                         EEG.icaact    = reshape( EEG.icaact, size(EEG.icaact,1), EEG.pnts, EEG.trials);
                     end
-                elseif ~isempty(EEG.icaact)
-                    tmpact = EEG.icaweights * EEG.icasphere * EEG.data(EEG.icachansind,1);
-                    if mean(abs(tmpact - EEG.icaact(:,1))) > 0.000001
+                end
+                if ~isempty(EEG.icaact)
+                    if EEG.trials*EEG.pnts < 1000
+                        tmpact = (EEG.icaweights * EEG.icasphere) * EEG.data(EEG.icachansind,:);
+                    else
+                        % special MATLAB calculation kicks in above 1000
+                        % (otherwise difference on the order of 0.0000001%)
+                        tmpact = (EEG.icaweights * EEG.icasphere) * EEG.data(EEG.icachansind,1:1000); 
+                    end
+                    if mean(abs(tmpact(:,1) - EEG.icaact(:,1))) > 0.000001
                         backtraceState = warning('backtrace');
                         warning('backtrace', 'off')
                         warning('ICA activities and weights mismatch, click on the link below for more information', 'verbose')
