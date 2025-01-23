@@ -345,7 +345,9 @@ if res.copyplugins
                 copyfile(fullfile( pluginOri, pluginOriList(iPlugin).name, '*'), destPath);
                 fprintf('Plugin %s copied successfully\n', pluginOriList(iPlugin).name);
             catch
-                fprintf('Issue with copying plugin %s - we suggest you reinstall it from the plugin manager\n', pluginOriList(iPlugin).name);
+                if ~isequal( pluginOriList(iPlugin).name, '.DS_Store')
+                    fprintf('Issue with copying plugin %s - we suggest you reinstall it from the plugin manager\n', pluginOriList(iPlugin).name);
+                end
             end
         end
     end
