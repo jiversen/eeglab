@@ -179,11 +179,12 @@ end
 
 % 3/13/2020 from cudaica_win
 % INSERT location of cudaica executable below
-if ispc
-    CUDAICABINARY = fullfile(eeglab_p, 'plugins', 'CudaICA1.0', 'cudaica_win.exe');
-else
-    CUDAICABINARY = fullfile(eeglab_p, 'plugins', 'CudaICA1.0', 'cudaica');
-end
+% FIXME: JRI Feb 2025
+% if ispc
+%     CUDAICABINARY = fullfile(eeglab_p, 'plugins', 'CudaICA1.0', 'cudaica_win.exe');
+% else
+%     CUDAICABINARY = fullfile(eeglab_p, 'plugins', 'CudaICA1.0', 'cudaica');
+% end
 
 try
     set(0,'defaultaxesfontsize',AXES_FONTSIZE);
