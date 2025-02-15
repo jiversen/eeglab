@@ -107,12 +107,12 @@ elseif VERS >= 8.04
         
         % AXES FONTSIZE
         if retinaDisplay
-          AXES_FONTSIZE   = 16;                 % Axis labels and legend font size
+          AXES_FONTSIZE   = 16;                % Axis labels and legend font size
         else
           AXES_FONTSIZE   = 9;                 % Axis labels and legend font size
         end
-        AXES_FONTSIZE_S = AXES_FONTSIZE - 2; % Axis labels and legend font size Small
-        AXES_FONTSIZE_L = 12.5;              % Axis labels and legend font size Large
+        AXES_FONTSIZE_S = AXES_FONTSIZE - 2;   % Axis labels and legend font size Small
+        AXES_FONTSIZE_L = AXES_FONTSIZE + 2;   % Axis labels and legend font size Large
         
         % GUI FONTSIZE
         if retinaDisplay
@@ -179,12 +179,12 @@ end
 
 % 3/13/2020 from cudaica_win
 % INSERT location of cudaica executable below
-% FIXME: JRI Feb 2025
-% if ispc
-%     CUDAICABINARY = fullfile(eeglab_p, 'plugins', 'CudaICA1.0', 'cudaica_win.exe');
-% else
-%     CUDAICABINARY = fullfile(eeglab_p, 'plugins', 'CudaICA1.0', 'cudaica');
-% end
+eeglab_p = fileparts(which('eeglab.m'));
+if ispc
+    CUDAICABINARY = fullfile(eeglab_p, 'plugins', 'CudaICA1.0', 'cudaica_win.exe');
+else
+    CUDAICABINARY = fullfile(eeglab_p, 'plugins', 'CudaICA1.0', 'cudaica');
+end
 
 try
     set(0,'defaultaxesfontsize',AXES_FONTSIZE);

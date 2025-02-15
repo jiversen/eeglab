@@ -1,17 +1,19 @@
 function starteeglab
 % starteeglab JRI wrapper to start eeglab, to avoid its undesired
-% sideeffects on globals.
-% Also close-proof the eeglab window (so can use 'close all' to close figures) and 
-% reposition it to right screen.
+% side effects on my globals and matlab path.
+% Also close-proofs the eeglab window (so can use 'close all' to close figures) and 
+% repositions it as desired.
+
+%is EEGLAB running, if so, do nothing
+eegwin = findobj('tag','EEGLAB');
+if ~isempty(eegwin), return; end
 
  global G
  Gsave = G; %somehow our global gets trashed with starting eeglab.
  fname = fullfile(tempdir,'jiglobals.mat');
  save(fname,'Gsave');
 
-%is EEGLAB running, if so, do nothing
-eegwin = findobj('tag','EEGLAB');
-if ~isempty(eegwin), return; end
+
 
 %if not, start eeglab, adjust paths, move window and make it uncloseable.
 %  Window is still closeable by clicking on close button or delete(eegwin).
@@ -33,15 +35,15 @@ nScreen = size(monpos,1);
 %move eeglab main window to second screen
 if nScreen > 1
     if ~ispc
-        set(eegwin,'position', [2062 804 382 298]) %adjust for your setup
+        set(eegwin,'position', [10        1700         550         440]) %adjust for your setup
     else
         set(eegwin,'position', [66 730 382 298])
     end
 end
-%sometimes two screens present as a single very wide screens
+% edge case: sometimes two screens presented as a single very wide screen in the past
 ss = get(0,'ScreenSize');
 if ss(3) > 2000 && nScreen == 1
-  set(eegwin,'position', [ 2066        860        400          236]) %adjust for your setup
+  set(eegwin,'position', [  10        1700         500         400]) %adjust for your setup
 end
 drawnow
 

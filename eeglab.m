@@ -1346,7 +1346,7 @@ BORDEREXT       = 10;
 comp = computer;
 if strcmpi(comp(1:3), 'GLN') || strcmpi(comp(1:3), 'MAC') || strcmpi(comp(1:3), 'PCW')  
     FONTNAME        = 'courier';
-    FONTSIZE        = 8;
+    FONTSIZE        = GUI_FONTSIZE_S-4;
     % Magnify figure under MATLAB 2012a
     vers = version;
     dotPos = find(vers == '.');
