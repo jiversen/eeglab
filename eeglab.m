@@ -423,6 +423,7 @@ versL = ~option_allmenus;
 if nargin == 1
     if strcmp(onearg, 'versions')
         disp( [ 'EEGLAB v' eeg_getversion ] );
+        return
 	elseif strcmp(onearg, 'nogui')
         nouiflag = true;
         if nargout < 1, clear ALLEEG; end % do not return output var
