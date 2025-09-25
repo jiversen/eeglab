@@ -135,8 +135,15 @@ else
                     TMPVAR = rmfield(TMPVAR, 'data');
                 end
             end
+
+%             ### Description
+% 
+% The point of 'filemode' 'info' is to quickly load metadata without loading the data. 
+% 
+% The current version of pop_loadset (introduced in commit 6324d5acecef92b5dcbf703fd0639395520347d5) seems to care whether the data can be found and if the .fdt is not found it then loads the entire .set file again (including the data field) to check if the .set contains data. This is unnecessary as I'm not asking for some kind of consistency check, just to quickly load the metadata. If the set file did happen to contain data (single file mode) this would additionally defeat the purpose of 'info' mode by forcing to load the data.
+
             if isfield(TMPVAR, 'datfile') && ~isempty(TMPVAR.datfile)
-                if exist(TMPVAR.datfile, 'file')
+                if true || exist(TMPVAR.datfile, 'file') %JRI: FIXME: this check assumes .fdt in same directory but that's not always the case
                     TMPVAR.data = TMPVAR.datfile;
                 else
                     warning('.fdt file not found, checking if .set contains data')
