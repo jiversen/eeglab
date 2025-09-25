@@ -41,11 +41,16 @@
 % ----------------------------------------------------------------------
 
 
+try
+    global G
+    EEGOPTION_PATH = G.paths.root; %JRI 08/30/2025
+catch
 
 EEGOPTION_PATH = ''; % if empty, the home folder of the current user is used
                      % Note that this may create problems under Windows
                      % when unicode characters are part of the user name
                      % In this case, enter the path name manually here.
+end
 
 YDIR  = 1;                  % positive potential up = 1; negative up = -1 
                             % for most ERP plots
@@ -100,7 +105,7 @@ elseif VERS >= 8.04
       
         %scale up fontsizes on higher resolution mac screens
         retinaDisplay = false;
-        if tmpScreenSize(3) >= 1920 % bump fontsize only for the highest retina res settings
+        if tmpScreenSize(4) >= 1920 % bump fontsize only for the highest retina res settings
             retinaDisplay = true; %comment this out if you don't want fontsizes increased at high display resolutions
             %disp('Mac OSX retina display detected. If this is not desired comment out line 83 of icadefs.m');
         end
@@ -177,7 +182,7 @@ else
     ICABINARY = 'ica_linux';
 end
 
-% 3/13/2020 from cudaica_win
+% JRI 3/13/2020 from cudaica_win
 % INSERT location of cudaica executable below
 eeglab_p = fileparts(which('eeglab.m'));
 if ispc
